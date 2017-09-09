@@ -4,6 +4,7 @@ import requests
 class Monitoring:
     url = 'http://studentvillage.ch/unterkunfte/'
     treepath = '//table[@class="wohnen_table type_is_all"]/tbody/tr'
+    limitprice = 900
 
     def requestPage(self):
         page = requests.get(self.url)
@@ -17,11 +18,15 @@ class Monitoring:
 
     def lookForFreeRooms(self, tablecontent):
         for element in tablecontent:
-            print(element)
+            totalprice = int(element[4][4:-2])
+            occupation = element[7]
+            status = "Reserviert"
+            #status = "Verfügbar"
+            if occupation == status and totalprice <= self.limitprice:
+                print(element)
 
     def sendApplication(self, destination):
         print("Sending Application")
-
 
 if __name__ == "__main__":
     monObj = Monitoring()
