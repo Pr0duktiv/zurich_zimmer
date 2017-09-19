@@ -1,12 +1,13 @@
 import smtplib
 from lxml import html
 import requests
+import time
 
 class Monitoring:
     url = 'http://studentvillage.ch/unterkunfte/'
     treepath = '//table[@class="wohnen_table type_is_all"]/tbody/tr'
     limitprice = 1000
-    targetemail = "patrice@5becker.de"
+    targetemail = "YOUR@EMAIL.HERE"
 
     def requestPage(self):
         page = requests.get(self.url)
@@ -45,13 +46,15 @@ class Monitoring:
         server.starttls()
         server.ehlo()
         server.login("zurichzimmergithub@gmail.com", "amyr8apm8cy3")
-        msg = "Hello! There are the following free rooms at StudentVillage: " + message
+        msg = "Hello! There are the following free rooms at StudentVillage: \n" + message
         server.sendmail("zurichzimmergithub@gmail.com", self.targetemail, msg)
 
 if __name__ == "__main__":
     monObj = Monitoring()
 
-    result = monObj.requestPage()
-    freerooms = monObj.lookForFreeRooms(result)
-    if len(freerooms) > 0:
-        monObj.sendMail(freerooms)
+    while True:
+        result = monObj.requestPage()
+        freerooms = monObj.lookForFreeRooms(result)
+        if len(freerooms) > 0:
+            monObj.sendMail(freerooms)
+        time.sleep(1200)
