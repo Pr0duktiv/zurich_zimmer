@@ -13,7 +13,12 @@ class Monitoring:
         result = list()
 
         for row in rows:
-            result.append([x.text for x in row.getchildren()])
+            #result.append([x.text for x in row.getchildren()])
+            print(row)
+            for x in row.getchildren():
+                print(x.xpath("//td/a")[1].get("href"))
+                result.append(x.text)
+        #print(result)
         return result
 
     def lookForFreeRooms(self, tablecontent):
@@ -25,10 +30,10 @@ class Monitoring:
             if occupation == status and totalprice <= self.limitprice:
                 print(element)
 
-    def sendApplication(self, destination):
+    def sendMail(self):
         print("Sending Application")
 
 if __name__ == "__main__":
     monObj = Monitoring()
     result = monObj.requestPage()
-    monObj.lookForFreeRooms(result)
+    #monObj.lookForFreeRooms(result)
